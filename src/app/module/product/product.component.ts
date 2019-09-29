@@ -13,24 +13,24 @@ import { FormGroup, FormBuilder, FormControl, Validators, FormControlName } from
 })
 export class ProductComponent implements OnInit {
 
-  @ViewChild('productAddModal', {static: false}) public addModal: ModalDirective; //In Angular 8 , ViewChild takes 2 parameters
-  @ViewChild('productDeleteModal', {static: false}) public deleteModal: ModalDirective; 
-  @ViewChild('productEditModal', {static: false}) public editModal: ModalDirective; 
-  @ViewChild('productDetailModal', {static: false}) public detailModal: ModalDirective; 
-  
-  selectedImage : any = '';
+  @ViewChild('productAddModal', { static: false }) public addModal: ModalDirective; //In Angular 8 , ViewChild takes 2 parameters
+  @ViewChild('productDeleteModal', { static: false }) public deleteModal: ModalDirective;
+  @ViewChild('productEditModal', { static: false }) public editModal: ModalDirective;
+  @ViewChild('productDetailModal', { static: false }) public detailModal: ModalDirective;
+
+  selectedImage: any = '';
   config: any;
   productList: Product[];
   p: number = 1;
   collection: [];
   addForm: FormGroup;
   product: Product;
-  mdbModalRef:MDBModalRef;
-  Id:number;
+  Id: number;
   editForm: FormGroup;
   detailForm: FormGroup;
 
-  constructor(private mdbModal: MDBModalService, private productService: ProductService, private route: ActivatedRoute, private router: Router, private builder: FormBuilder) {
+  constructor(private productService: ProductService, private route: ActivatedRoute, private router: Router, private builder: FormBuilder) {
+    //pagination
     this.config = {
       currentPage: 1,
       itemsPerPage: 20
@@ -42,8 +42,8 @@ export class ProductComponent implements OnInit {
   }
 
   pageChange(newPage: number) {
-		this.router.navigate([''], { queryParams: { page: newPage } });
-	}
+    this.router.navigate([''], { queryParams: { page: newPage } });
+  }
 
   ngOnInit() {
     this.getProductAll();
@@ -67,6 +67,7 @@ export class ProductComponent implements OnInit {
     });
   }
 
+  //all product list
   public getProductAll() {
     this.productService.getProducts()
       .subscribe(data => this.productList = Object.values(data));
@@ -81,28 +82,28 @@ export class ProductComponent implements OnInit {
       storeDesc: new FormControl(null, [Validators.required])
     });
   }
-  openAddProduct(){
+  openAddProduct() {
     this.addModal.show();
     this.clearAddForm();
   }
 
-  addProduct(){
+  addProduct() {
     const newBox = this.addForm.value;
     this.productList.push(newBox);
     this.addModal.hide();
   }
 
   //delete methodu
-  openDeleteProduct(Id:number){
+  openDeleteProduct(Id: number) {
     this.deleteModal.show();
-    this.Id=Id;
+    this.Id = Id;
   }
 
-  deleteProduct(Id: number){
-    for(var i=0; i< this.productList.length; i++){
-        if(this.productList[i]['storeId']== Id){
-          this.productList.splice(i,1);
-        } 
+  deleteProduct(Id: number) {
+    for (var i = 0; i < this.productList.length; i++) {
+      if (this.productList[i]['storeId'] == Id) {
+        this.productList.splice(i, 1);
+      }
     }
     this.deleteModal.hide();
   }
@@ -118,44 +119,38 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  editProduct(Id:number) {
+  editProduct(Id: number) {
     const newBox = this.editForm.value;
-    for(var i=0; i< this.productList.length; i++){
-      if(this.productList[i]['storeId']== Id){
+    for (var i = 0; i < this.productList.length; i++) {
+      if (this.productList[i]['storeId'] == Id) {
         this.productList[i]['memberId'] = newBox.memberId;
         this.productList[i]['storeName'] = newBox.storeName;
         this.productList[i]['storeDesc'] = newBox.storeDesc;
-      } 
-  }
-  this.editModal.hide();
-  }
-
-    //edit methodu
-    openDetailProduct(product: Product) {
-         
-      this.detailModal.show();
-      this.product = product;
-
-      
-      //this.imageElement = document.createElement('img');
-      this.selectedImage = product.storeLogoURL;
-      //this.element.src = product.storeLogoURL;
-      debugger; 
-      this.detailForm.setValue({
-        storeId: product.storeId,
-        storeName: product.storeName,
-        storeSlug: product.storeSlug,
-        storeTitle: product.storeTitle,
-        memberId: product.memberId,
-        storeDesc: product.storeDesc,
-        displayLogo: product.displayLogo,
-        storeLogoURL: product.storeLogoURL
-      });
+      }
     }
-  
-    detailProduct() {
+    this.editModal.hide();
+  }
+
+  //detail 
+  openDetailProduct(product: Product) {
+
+    this.detailModal.show();
+    this.product = product;
+    this.selectedImage = product.storeLogoURL;
+    this.detailForm.setValue({
+      storeId: product.storeId,
+      storeName: product.storeName,
+      storeSlug: product.storeSlug,
+      storeTitle: product.storeTitle,
+      memberId: product.memberId,
+      storeDesc: product.storeDesc,
+      displayLogo: product.displayLogo,
+      storeLogoURL: product.storeLogoURL
+    });
+  }
+
+  detailProduct() {
     this.detailModal.hide();
-    }
-
+  }
 
 }

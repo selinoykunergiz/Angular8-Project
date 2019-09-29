@@ -1,14 +1,10 @@
 <!-- Editable table -->
-<div class="card">
+<div class="card-sebit">
   <div class="card-body">
     <div id="table" class="table-editable">
-      <div class="mdb-header">
-        <h4 class="modal-title">Ekran</h4>
-        
-      </div>
       <span class=" mb-3 mr-2">
         <div class="row">
-          <span (click)="openAddProduct()" class="btn teal darken-3 btn-rounded text-capitalize text-white">
+          <span (click)="openAddProduct()" class="btn teal darken-3 btn-rounded text-capitalize text-white addButton">
             &nbsp; Yeni
             Kayıt Ekle
           </span>
@@ -26,20 +22,20 @@
           <td><img src="{{product.storeLogoURL}}" alt="{{product.storeName}}"></td>
           <td>{{product.storeName}}</td>
           <td>{{product.memberId}}</td>
-          <td>{{product.storeDesc}}</td>
+          <td class="explanation">{{product.storeDesc}}</td>
           <td>
             <div>
               <ul class="product-islem">
                 <li class="product-islem-list">
-                  <span class="btn btn-rounded btn-delete btn-group-sm text-capitalize"
+                  <span class="btn btn-rounded btn-delete btn-group-sm text-capitalize detailButton"
                     (click)="openDetailProduct(product)">
                     Detay
                   </span>
-                  <span class="btn btn-rounded btn-edit btn-group-sm text-capitalize"
+                  <span class="btn btn-rounded btn-edit btn-group-sm text-capitalize editButton"
                     (click)="openEditProduct(product)">
                     Düzenle
                   </span>
-                  <span class="btn btn-rounded btn-delete btn-group-sm text-capitalize"
+                  <span class="btn btn-rounded btn-delete btn-group-sm text-capitalize deleteButton"
                     (click)="openDeleteProduct(product.storeId)">
                     Sil
                   </span>
@@ -48,12 +44,15 @@
             </div>
           </td>
         </tr>
-        <pagination-controls (pageChange)="pageChange($event)"></pagination-controls>
+       
       </table>
+      <div class="pagination">
+        <pagination-controls (pageChange)="pageChange($event)"></pagination-controls>
+      </div>
     </div>
   </div>
 </div>
-<!-- Editable table -->
+
 
 <!--Add Modal-->
 <div mdbModal #productAddModal="mdbModal" class="modal fade" id="productAddModal" tabindex="-1" role="dialog"
@@ -75,24 +74,18 @@
           <div class="md-form form-sm">
             <label for="storeName">*Adı</label>
             <input mdbInput mdbValidate type="text" id="storeName" formControlName="storeName" class="form-control" />
-            <!-- <mdb-error *ngIf="addNameInput.invalid && (addNameInput.dirty || addNameInput.touched)"> Adı alanı dolu
-                    olmalıdır</mdb-error> -->
-          </div>
 
+          </div>
           <div class="md-form form-sm">
             <label for="memberId">*Üye Numarası</label>
             <input mdbInput mdbValidate type="text" id="memberId" formControlName="memberId" class="form-control" />
-            <!-- <mdb-error *ngIf="addNameInput.invalid && (addNameInput.dirty || addNameInput.touched)"> Adı alanı dolu
-                      olmalıdır</mdb-error> -->
-          </div>
 
+          </div>
           <div class="md-form form-sm">
             <label for="storeDesc">*Açıklaması</label>
             <input mdbInput mdbValidate type="text" id="storeDesc" formControlName="storeDesc" class="form-control" />
-            <!-- <mdb-error *ngIf="addNameInput.invalid && (addNameInput.dirty || addNameInput.touched)"> Adı alanı dolu
-                      olmalıdır</mdb-error> -->
-          </div>
 
+          </div>
           <div class="text-center mt-1-half">
             <button mdbBtn [disabled]="!addForm.valid" color="default"
               class="mb-2 text-white waves-light text-capitalize" mdbWavesEffect>
@@ -105,162 +98,136 @@
   </div>
 </div>
 
-    <!-- Delete Modal -->
-    <div mdbModal #productDeleteModal="mdbModal" class="modal fade top" id="deleteModal"
-      tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ngDefaultControl>
-      <div class="modal-dialog modal-md modal-notify modal-danger" role="document">
-        <div class="modal-content text-center">
-          <div class="modal-header d-flex justify-content-center">
-            <p class="heading">Elemanı silmek istediğinizden emin misiniz?</p>
-          </div>
-          <div class="modal-body">
-            <i class="fas fa-times fa-3x animated rotateIn"></i>
-          </div>
-          <div class="modal-footer justify-content-center">
-            <a type="button" mdbBtn color="danger" outline="true" class="waves-effect text-capitalize" mdbWavesEffect
-              (click)="deleteProduct(Id)">Evet</a>
-            <a type="button" mdbBtn color="danger" class="waves-effect text-capitalize" mdbWavesEffect
-              data-dismiss="modal" (click)="productDeleteModal.hide()">Hayır</a>
-          </div>
-        </div>
+<!-- Delete Modal -->
+<div mdbModal #productDeleteModal="mdbModal" class="modal fade top" id="deleteModal" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true" ngDefaultControl>
+  <div class="modal-dialog modal-md modal-notify modal-danger" role="document">
+    <div class="modal-content text-center">
+      <div class="modal-header d-flex justify-content-center">
+        <p class="heading deleteParag">Elemanı silmek istediğinizden emin misiniz?</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <a type="button" mdbBtn color="danger" outline="true" class="waves-effect text-capitalize" mdbWavesEffect
+          (click)="deleteProduct(Id)">Evet</a>
+        <a type="button" mdbBtn color="danger" class="waves-effect text-capitalize" mdbWavesEffect data-dismiss="modal"
+          (click)="productDeleteModal.hide()">Hayır</a>
       </div>
     </div>
+  </div>
+</div>
 
-     <!--Edit Modal-->
-     <div mdbModal #productEditModal="mdbModal" class="modal fade" id="productEditModal" tabindex="-1" role="dialog"
-     aria-labelledby="productModalLabel" aria-hidden="true" ngDefaultControl [config]="{ backdrop: 'static' }">
-     <div class="modal-dialog cascading-modal" role="document">
-       <div class="modal-content">
-         <div class="modal-header light-blue darken-3 text-center">
-           <h4 class="title">
-             Düzenle
-             <mdb-icon fas icon="pencil-alt" class="prefix"></mdb-icon>
-             <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close"
-               (click)="productEditModal.hide()">
-               <span aria-hidden="true">×</span>
-             </button>
-           </h4>
-         </div>
-         <!--Body-->
-         <div class="modal-body mb-0">
-           <form [formGroup]="editForm" (ngSubmit)="editProduct(product.storeId)">
-              <div class="md-form form-sm">
-                <label for="storeName">*Adı</label>
-                <input mdbInput mdbValidate type="text" id="storeName" formControlName="storeName" class="form-control" />
-                <!-- <mdb-error *ngIf="addNameInput.invalid && (addNameInput.dirty || addNameInput.touched)"> Adı alanı dolu
-                        olmalıdır</mdb-error> -->
-              </div>
-    
-              <div class="md-form form-sm">
-                <label for="memberId">*Üye Numarası</label>
-                <input mdbInput mdbValidate type="text" id="memberId" formControlName="memberId" class="form-control" />
-                <!-- <mdb-error *ngIf="addNameInput.invalid && (addNameInput.dirty || addNameInput.touched)"> Adı alanı dolu
-                          olmalıdır</mdb-error> -->
-              </div>
-    
-              <div class="md-form form-sm">
-                <label for="storeDesc">*Açıklaması</label>
-                <input mdbInput mdbValidate type="text" id="storeDesc" formControlName="storeDesc" class="form-control" />
-                <!-- <mdb-error *ngIf="addNameInput.invalid && (addNameInput.dirty || addNameInput.touched)"> Adı alanı dolu
-                          olmalıdır</mdb-error> -->
-              </div>
+<!--Edit Modal-->
+<div mdbModal #productEditModal="mdbModal" class="modal fade" id="productEditModal" tabindex="-1" role="dialog"
+  aria-labelledby="productModalLabel" aria-hidden="true" ngDefaultControl [config]="{ backdrop: 'static' }">
+  <div class="modal-dialog cascading-modal" role="document">
+    <div class="modal-content">
+      <div class="modal-header light-blue darken-3 text-center">
+        <h4 class="title editTitle">
+          Düzenle
+          <mdb-icon fas icon="pencil-alt" class="prefix"></mdb-icon>
+          <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close"
+            (click)="productEditModal.hide()">
+            <span aria-hidden="true">×</span>
+          </button>
+        </h4>
+      </div>
+      <!--Body-->
+      <div class="modal-body mb-0">
+        <form [formGroup]="editForm" (ngSubmit)="editProduct(product.storeId)">
+          <div class="md-form form-sm">
+            <label for="storeName">*Adı</label>
+            <input mdbInput mdbValidate type="text" id="storeName" formControlName="storeName" class="form-control" />
+           
+          </div>
+          <div class="md-form form-sm">
+            <label for="memberId">*Üye Numarası</label>
+            <input mdbInput mdbValidate type="text" id="memberId" formControlName="memberId" class="form-control" />
+            
+          </div>
+          <div class="md-form form-sm">
+            <label for="storeDesc">*Açıklaması</label>
+            <input mdbInput mdbValidate type="text" id="storeDesc" formControlName="storeDesc" class="form-control" />
+           
+          </div>
+          <div class="text-center mt-1-half">
+            <button mdbBtn [disabled]="!editForm.valid" color="info" class="mb-2 text-white waves-light text-capitalize"
+              mdbWavesEffect>
+              Kaydet
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
-             <div class="text-center mt-1-half">
-               <button mdbBtn [disabled]="!editForm.valid" color="info"
-                 class="mb-2 text-white waves-light text-capitalize" mdbWavesEffect>
-                 Kaydet
-                 <mdb-icon fas icon="paper-plane" class="prefix ml-1"></mdb-icon>
-               </button>
-             </div>
-           </form>
-         </div>
-       </div>
-     </div>
-   </div>
 
-   
-     <!--Detail Modal-->
-     <div mdbModal #productDetailModal="mdbModal" class="modal fade" id="productDetailModal" tabindex="-1" role="dialog"
-     aria-labelledby="productModalLabel" aria-hidden="true" ngDefaultControl [config]="{ backdrop: 'static' }">
-     <div class="modal-dialog cascading-modal" role="document">
-       <div class="modal-content">
-         <div class="modal-header light-blue darken-3 text-center">
-           <h4 class="title">
-             Detay
-             <mdb-icon fas icon="pencil-alt" class="prefix"></mdb-icon>
-             <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close"
-               (click)="productDetailModal.hide()">
-               <span aria-hidden="true">×</span>
-             </button>
-           </h4>
-         </div>
-         <!--Body-->
-         <div class="modal-body mb-0">
-           <form [formGroup]="detailForm" (ngSubmit)="detailProduct()">
-              <div class="md-form form-sm">
-                  <label for="storeId">*storeId</label>
-                  <input mdbInput mdbValidate type="text" id="storeId" formControlName="storeId" class="form-control" />
-                  <!-- <mdb-error *ngIf="addNameInput.invalid && (addNameInput.dirty || addNameInput.touched)"> Adı alanı dolu
-                          olmalıdır</mdb-error> -->
-                </div>
-              <div class="md-form form-sm">
-                <label for="storeName">*Adı</label>
-                <input mdbInput mdbValidate type="text" id="storeName" formControlName="storeName" class="form-control" />
-                <!-- <mdb-error *ngIf="addNameInput.invalid && (addNameInput.dirty || addNameInput.touched)"> Adı alanı dolu
-                        olmalıdır</mdb-error> -->
-              </div>
-              
-              <div class="md-form form-sm">
-                  <label for="storeSlug">*storeSlug</label>
-                  <input mdbInput mdbValidate type="text" id="storeSlug" formControlName="storeSlug" class="form-control" />
-                  <!-- <mdb-error *ngIf="addNameInput.invalid && (addNameInput.dirty || addNameInput.touched)"> Adı alanı dolu
-                          olmalıdır</mdb-error> -->
-                </div>
-                
-                <div class="md-form form-sm">
-                    <label for="storeTitle">*storeTitle</label>
-                    <input mdbInput mdbValidate type="text" id="storeTitle" formControlName="storeTitle" class="form-control" />
-                    <!-- <mdb-error *ngIf="addNameInput.invalid && (addNameInput.dirty || addNameInput.touched)"> Adı alanı dolu
-                            olmalıdır</mdb-error> -->
-                  </div>
-
-                  <div class="md-form form-sm">
-                      <label for="memberId">*Üye Numarası</label>
-                      <input mdbInput mdbValidate type="text" id="memberId" formControlName="memberId" class="form-control" />
-                      <!-- <mdb-error *ngIf="addNameInput.invalid && (addNameInput.dirty || addNameInput.touched)"> Adı alanı dolu
-                                olmalıdır</mdb-error> -->
-                    </div>
-
-                    <div class="md-form form-sm">
-                        <label for="storeDesc">*Açıklaması</label>
-                        <input mdbInput mdbValidate type="text" id="storeDesc" formControlName="storeDesc" class="form-control" />
-                        <!-- <mdb-error *ngIf="addNameInput.invalid && (addNameInput.dirty || addNameInput.touched)"> Adı alanı dolu
-                                  olmalıdır</mdb-error> -->
-                      </div>
-
-                      <div class="md-form form-sm">
-                          <label for="displayLogo">*displayLogo</label>
-                          <input mdbInput mdbValidate type="text" id="displayLogo" formControlName="displayLogo" class="form-control" />
-                          <!-- <mdb-error *ngIf="addNameInput.invalid && (addNameInput.dirty || addNameInput.touched)"> Adı alanı dolu
-                                  olmalıdır</mdb-error> -->
-                        </div>  
-                        <div class="md-form form-sm">
-                           
-                            <img src="{{selectedImage}}" [selectedImage] id="storeLogoURL">
-                            <!-- <mdb-error *ngIf="addNameInput.invalid && (addNameInput.dirty || addNameInput.touched)"> Adı alanı dolu
-                                    olmalıdır</mdb-error> -->
-                          </div>  
-  
-                        
-                
-             <div class="text-center mt-1-half">
-               <button mdbBtn [disabled]="!detailForm.valid" color="info"
-                 class="mb-2 text-white waves-light text-capitalize" mdbWavesEffect>
-                 Kapat
-               </button>
-             </div>
-           </form>
-         </div>
-       </div>
-     </div>
-   </div>  
+<!--Detail Modal-->
+<div mdbModal #productDetailModal="mdbModal" class="modal fade" id="productDetailModal" tabindex="-1" role="dialog"
+  aria-labelledby="productModalLabel" aria-hidden="true" ngDefaultControl [config]="{ backdrop: 'static' }">
+  <div class="modal-dialog cascading-modal" role="document">
+    <div class="modal-content">
+      <div class="modal-header warning-color text-center">
+        <h4 class="title detailTitle">
+          Detay 
+          <mdb-icon fas icon="pencil-alt" class="prefix"></mdb-icon>
+          <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close"
+            (click)="productDetailModal.hide()">
+            <span aria-hidden="true">×</span>
+          </button>
+        </h4>
+      </div>
+      <!--Body-->
+      <div class="modal-body mb-0">
+        <form [formGroup]="detailForm" (ngSubmit)="detailProduct()">
+          <div class="md-form form-sm">
+            <label for="storeId">*Stok Numarası</label>
+            <input mdbInput mdbValidate type="text" id="storeId" formControlName="storeId" class="form-control" />
+            </div>
+          <div class="md-form form-sm">
+            <label for="storeName">*Adı</label>
+            <input mdbInput mdbValidate type="text" id="storeName" formControlName="storeName" class="form-control" />
+      
+          </div>
+          <div class="md-form form-sm">
+            <label for="storeSlug">*Url Adresi</label>
+            <input mdbInput mdbValidate type="text" id="storeSlug" formControlName="storeSlug" class="form-control" />
+           
+          </div>
+          <div class="md-form form-sm">
+            <label for="storeTitle">*Başlık</label>
+            <input mdbInput mdbValidate type="text" id="storeTitle" formControlName="storeTitle" class="form-control" />
+         
+          </div>
+          <div class="md-form form-sm">
+            <label for="memberId">*Üye Numarası</label>
+            <input mdbInput mdbValidate type="text" id="memberId" formControlName="memberId" class="form-control" />
+       
+          </div>
+          <div class="md-form form-sm">
+            <label for="storeDesc">*Açıklaması</label>
+            <input mdbInput mdbValidate type="text" id="storeDesc" formControlName="storeDesc" class="form-control" />
+       
+          </div>
+          <div class="md-form form-sm">
+            <label for="displayLogo">*Logo</label>
+            <input mdbInput mdbValidate type="text" id="displayLogo" formControlName="displayLogo"
+              class="form-control" />
+     
+          </div>
+          <div class="md-form form-sm">
+            <div class="labelImg"><label for="storeLogoURL">*Ürün Görseli</label></div>
+            <img src="{{selectedImage}}" [selectedImage] id="storeLogoURL">
+       
+          </div>
+          <div class="text-center mt-1-half">
+            <button mdbBtn [disabled]="!detailForm.valid" color="info"
+              class="mb-2 text-white waves-light text-capitalize" mdbWavesEffect>
+              Kapat
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
